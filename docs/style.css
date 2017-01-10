@@ -9,11 +9,14 @@ body {
   overflow: hidden;
 }
 
+body.hide-cursor {
+  cursor: none;
+}
+
 #app {
   width: 100vmin;
   height: 100vmin;
   margin: auto;
-  cursor: pointer;
 }
 
 canvas {

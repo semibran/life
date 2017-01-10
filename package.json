@@ -9,6 +9,7 @@
   },
   "license": "MIT",
   "scripts": {
+    "postinstall": "npm start",
     "start": "npm-run-all --parallel serve watch",
     "serve": "reload -bd docs",
     "watch": "rollup --watch --input src/index.js -mco docs/build.js"

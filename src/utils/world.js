@@ -10,13 +10,16 @@ const DOWN       = [ 0,  1]
 const DOWN_RIGHT = [ 1,  1]
 const directions = [UP_LEFT, UP, UP_RIGHT, LEFT, RIGHT, DOWN_LEFT, DOWN, DOWN_RIGHT]
 
-function generate(size) {
+function generate(size, ratio) {
+
+  if (!ratio)
+    ratio = 0.8
 
   var area = size * size
   var data = new Uint8ClampedArray(area)
   var i = area
   while (i--)
-    data[i] = Math.random() > 0.75
+    data[i] = Math.random() > ratio
 
   return data
 
