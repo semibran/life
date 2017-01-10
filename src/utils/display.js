@@ -22,7 +22,7 @@ function create(width, height) {
     if (!parent)
       throw new TypeError(`Cannot mount display onto parent element '${parent}'`)
     parent.appendChild(_canvas)
-    _parent = parent
+    _parent = display.parent = parent
     render()
     return display
   }
@@ -39,17 +39,6 @@ function create(width, height) {
     if (!buffer)
       return display
 
-    // var i = buffer.length
-    // while (i--) {
-    //   var x = i % _width
-    //   var y = (i - x) / _width
-    //   var id = buffer[i]
-    //   if ( !_buffer || id !== _buffer[i] ) {
-    //     _context.fillStyle = id ? 'white' : 'black'
-    //     _context.fillRect(x, y, 1, 1)
-    //   }
-    // }
-
     var imageData = _context.createImageData(_width, _height)
     var data = imageData.data
     var index = buffer.length
@@ -58,16 +47,11 @@ function create(width, height) {
       var x = index % _width
       var y = (index - x) / _width
       var status = buffer[index]
-      var cached = null
-      if (_buffer)
-        cached = _buffer[index]
       var value = status ? 255 : 0
-      // if (cached && status !== cached || !cached) {
-        data[i]     = value
-        data[i + 1] = value
-        data[i + 2] = value
-        data[i + 3] = 255
-      // }
+      data[i]     = value
+      data[i + 1] = value
+      data[i + 2] = value
+      data[i + 3] = 255
     }
 
     _context.putImageData(imageData, 0, 0)
@@ -76,7 +60,7 @@ function create(width, height) {
     return display
   }
 
-  var display = { width: _width, height: _height, aspect: _aspect, context: _context, mount, clear, render }
+  var display = { width: _width, height: _height, aspect: _aspect, context: _context, parent: _parent, mount, clear, render }
   return display
 
 }

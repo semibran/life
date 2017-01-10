@@ -173,7 +173,7 @@ function create(width, height) {
     if (typeof parent === 'string') parent = document.querySelector(parent);
     if (!parent) throw new TypeError('Cannot mount display onto parent element \'' + parent + '\'');
     parent.appendChild(_canvas);
-    _parent = parent;
+    _parent = display.parent = parent;
     render();
     return display;
   }
@@ -188,17 +188,6 @@ function create(width, height) {
     buffer = buffer || _buffer;
     if (!buffer) return display;
 
-    // var i = buffer.length
-    // while (i--) {
-    //   var x = i % _width
-    //   var y = (i - x) / _width
-    //   var id = buffer[i]
-    //   if ( !_buffer || id !== _buffer[i] ) {
-    //     _context.fillStyle = id ? 'white' : 'black'
-    //     _context.fillRect(x, y, 1, 1)
-    //   }
-    // }
-
     var imageData = _context.createImageData(_width, _height);
     var data = imageData.data;
     var index = buffer.length;
@@ -207,15 +196,11 @@ function create(width, height) {
       var x = index % _width;
       var y = (index - x) / _width;
       var status = buffer[index];
-      var cached = null;
-      if (_buffer) cached = _buffer[index];
       var value = status ? 255 : 0;
-      // if (cached && status !== cached || !cached) {
       data[i] = value;
       data[i + 1] = value;
       data[i + 2] = value;
       data[i + 3] = 255;
-      // }
     }
 
     _context.putImageData(imageData, 0, 0);
@@ -224,18 +209,16 @@ function create(width, height) {
     return display;
   }
 
-  var display = { width: _width, height: _height, aspect: _aspect, context: _context, mount: mount, clear: clear, render: render };
+  var display = { width: _width, height: _height, aspect: _aspect, context: _context, parent: _parent, mount: mount, clear: clear, render: render };
   return display;
 }
 
 var Display = { create: create };
 
-var Game$$1 = { create: create$1 };
+var DEAD = 0;
+var LIVE = 1;
 
 function create$1(size, element) {
-
-  var DEAD = 0;
-  var LIVE = 1;
 
   var world = World.generate(size);
   var display = Display.create(size).mount('#app').render(world);
@@ -282,19 +265,65 @@ function create$1(size, element) {
   }
 
   function tick() {
-    world = update(world, size);
-    display.render(world);
+    game.world = update(game.world, size);
+    display.render(game.world);
   }
 
-  return { update: update, tick: tick };
+  var game = { update: update, tick: tick, size: size, world: world, display: display };
+  return game;
 }
+
+var Game$$1 = { create: create$1, DEAD: DEAD, LIVE: LIVE };
 
 var game = Game$$1.create(128, '#app');
 
 function animate() {
-  game.tick();
+  if (!mouse.left && !mouse.right) game.tick();
   window.requestAnimationFrame(animate);
 }
+
+var mouse = { left: false, right: false, cell: [] };
+
+var parent = game.display.parent;
+var parentRect = parent.getBoundingClientRect();
+
+parent.addEventListener('contextmenu', onContextMenu);
+parent.addEventListener('mousemove', onMouseMove);
+parent.addEventListener('mousedown', onMouseClick);
+window.addEventListener('mouseup', onMouseClick);
+
+function onMouseMove(event) {
+  var x = event.offsetX,
+      y = event.offsetY;
+
+  var cell = mouse.cell = [Math.round(x / parentRect.width * game.size), Math.round(y / parentRect.height * game.size)];
+  var cellX = cell[0],
+      cellY = cell[1];
+
+  var value = null;
+  if (mouse.left) value = Game$$1.LIVE;else if (mouse.right) value = Game$$1.DEAD;
+  if (mouse.left || mouse.right) {
+    var index = World.posToIndex(cell, game.size);
+    game.world[index] = value;
+    game.display.render(game.world);
+  }
+}
+
+function onMouseClick(event) {
+  var isMouseDown = event.type === 'mousedown';
+  var button = event.button;
+  if (button === 0) mouse.left = isMouseDown;
+  if (button === 2) mouse.right = isMouseDown;
+  if (isMouseDown) {
+    parentRect = parent.getBoundingClientRect();
+    onMouseMove(event);
+  }
+}
+
+function onContextMenu(event) {
+  event.preventDefault();
+}
+
 animate();
 
 })));

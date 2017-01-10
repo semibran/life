@@ -1,11 +1,9 @@
 import { World, Display } from './index'
 
-export default { create }
+const DEAD = 0
+const LIVE = 1
 
 function create(size, element) {
-
-  const DEAD = 0
-  const LIVE = 1
 
   var world   = World.generate(size)
   var display = Display.create(size).mount('#app').render(world)
@@ -38,10 +36,13 @@ function create(size, element) {
   }
 
   function tick() {
-    world = update(world, size)
-    display.render(world)
+    game.world = update(game.world, size)
+    display.render(game.world)
   }
 
-  return { update, tick }
+  var game = { update, tick, size, world, display }
+  return game
 
 }
+
+export default { create, DEAD, LIVE }
