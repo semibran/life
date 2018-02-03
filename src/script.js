@@ -6,8 +6,8 @@ let state = {
   world: {
     time: 0,
     rule: parse("B3/S23"),
-    size: [ 256, 256 ],
-    data: new Uint8ClampedArray(256 * 256)
+    size: [ 768, 768 ],
+    data: new Uint8ClampedArray(768 * 768)
   }
 }
 
@@ -34,7 +34,7 @@ function reset(world) {
       let dx = world.size[0] / 2 - x
       let dy = world.size[1] / 2 - y
       let d = Math.sqrt(dx * dx + dy * dy)
-      let r = world.size[0] / 2
+      let r = world.size[0] / 3
       return Math.random() > d / r
     })
 }
