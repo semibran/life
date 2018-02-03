@@ -11,11 +11,11 @@ module.exports = function render(world, canvas) {
   for (var y = 0; y < rows; y++) {
     for (var x = 0; x < cols; x++) {
       var index = y * cols + x
-      image.data[index * 4 + 3] = 255
       if (world.data[index]) {
         image.data[index * 4]     = 255
         image.data[index * 4 + 1] = 255
         image.data[index * 4 + 2] = 255
+        image.data[index * 4 + 3] = 255
       }
     }
   }
