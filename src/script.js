@@ -5,7 +5,7 @@ let state = {
   cache: new Array(8),
   world: {
     time: 0,
-    rule: parse("B3/23"),
+    rule: parse("B3/S23"),
     size: [ 256, 256 ],
     data: new Uint8ClampedArray(256 * 256)
   }
@@ -28,7 +28,15 @@ function reset(world) {
   world.time = 0
   world.data = world.data
     .fill()
-    .map(_ => Math.random() < 0.5)
+    .map((_, index) => {
+      let x = index % world.size[0]
+      let y = (index - x) / world.size[0]
+      let dx = world.size[0] / 2 - x
+      let dy = world.size[1] / 2 - y
+      let d = Math.sqrt(dx * dx + dy * dy)
+      let r = world.size[0] / 2
+      return Math.random() > d / r
+    })
 }
 
 function loop() {
