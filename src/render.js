@@ -18,7 +18,7 @@ module.exports = function render(state, canvas) {
       var percent = (cache.length - i) / cache.length
       image.data[index * 4]     = 0
       image.data[index * 4 + 1] = 0
-      image.data[index * 4 + 2] = 127 * percent
+      image.data[index * 4 + 2] = 255 * percent
       image.data[index * 4 + 3] = 255
     }
   }
