@@ -7,7 +7,7 @@ let world = {
   time: 0,
   rule: { birth: [ 3 ], survival: [ 2, 3 ] },
   size: [ 256, 256 ],
-  data: null
+  data: new Uint8ClampedArray(256 * 256)
 }
 
 reset(world)
@@ -18,7 +18,7 @@ requestAnimationFrame(loop)
 
 function reset(world) {
   world.time = 0
-  world.data = new Uint8ClampedArray(world.size[0] * world.size[1])
+  world.data = world.data
     .fill()
     .map(_ => Math.random() < distribution)
 }
