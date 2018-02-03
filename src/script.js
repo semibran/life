@@ -35,7 +35,7 @@ function reset(world) {
       let dy = world.size[1] / 2 - y
       let d = Math.sqrt(dx * dx + dy * dy)
       let r = world.size[0] / 3
-      return Math.random() > d / r
+      return Math.random() > d / r && Math.random() < 0.5
     })
 }
 

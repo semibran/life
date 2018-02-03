@@ -10,10 +10,10 @@ module.exports = function render(state, canvas) {
   }
   var context = canvas.getContext("2d")
   var image = context.createImageData(canvas.width, canvas.height)
-  for (var i = 0; i < cache.length; i++) {
+  for (var i = cache.length; i--;) {
     var indices = cache[i]
-    if (!indices) break
-    for (var j = 0; j < indices.length; j++) {
+    if (!indices) continue
+    for (var j = indices.length; j--;) {
       var index = indices[j]
       var percent = (cache.length - i) / cache.length
       image.data[index * 4]     = 0
