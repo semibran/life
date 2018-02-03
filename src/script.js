@@ -2,7 +2,7 @@ const update = require("../lib/update")
 const render = require("./render")
 
 let state = {
-  cache: new Array(8),
+  cache: new Array(16),
   world: {
     time: 0,
     rule: parse("B3/S23"),
@@ -43,7 +43,12 @@ function loop() {
   let { cache, world } = state
   if (cache.length) {
     for (let i = cache.length - 1; i--;) cache[i + 1] = cache[i]
-    cache[0] = world.data.join("")
+    let indices = cache[0] = []
+    for (let i = 0; i < world.data.length; i++) {
+      if (world.data[i]) {
+        indices.push(i)
+      }
+    }
   }
   update(world)
   render(state, canvas)
