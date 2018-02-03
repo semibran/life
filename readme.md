@@ -1,7 +1,7 @@
 # life
 
 ![conway's game of life](life.png "OH YEAH")
-> [View the demo](https://semibran.github.io/life/)
+> **[View the demo](https://semibran.github.io/life/)**
 
 Any [Life-like cellular automaton](https://en.wikipedia.org/wiki/Life-like_cellular_automaton) can be modeled using a data structure similar to the following:
 ```js
