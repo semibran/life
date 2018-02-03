@@ -1,26 +1,20 @@
 {
-  "name": "game-of-life",
-  "version": "0.0.1",
-  "description": "Conway's Game of Life in JavaScript",
-  "author": "Brandon Semilla (https://github.com/semibran)",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/semibran/game-of-life.git"
-  },
+  "name": "life",
+  "version": "0.0.0",
+  "description": "conway's game of life",
+  "author": "Brandon Semilla <semibran@gmail.com>",
+  "repository": "semibran/life",
   "license": "MIT",
-  "scripts": {
-    "postinstall": "npm start",
-    "start": "npm-run-all --parallel serve watch",
-    "serve": "reload -bd docs",
-    "watch": "rollup --watch --input src/index.js -mco docs/build.js"
-  },
   "devDependencies": {
-    "babel-plugin-external-helpers": "^6.18.0",
-    "babel-preset-es2015": "^6.18.0",
-    "npm-run-all": "^4.0.0",
-    "reload": "^1.1.0",
-    "rollup": "^0.41.1",
-    "rollup-plugin-babel": "^2.7.1",
-    "rollup-watch": "^3.2.2"
+    "autoprefixer": "^7.2.5",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "clean-css-cli": "^4.1.10",
+    "gh-pages": "^1.1.0",
+    "html-minifier": "^3.5.8",
+    "postcss-cli": "^4.1.1",
+    "rollup": "^0.55.1",
+    "rollup-plugin-commonjs": "^8.3.0",
+    "uglify-js": "^3.3.9"
   }
 }

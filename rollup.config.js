@@ -1,6 +1,5 @@
-import babel from 'rollup-plugin-babel'
-
+import commonjs from "rollup-plugin-commonjs"
 export default {
-  plugins: [ babel() ],
-  format: 'umd'
+  output: { name: "app" },
+  plugins: [ commonjs() ]
 }
