@@ -3,7 +3,7 @@
 ![conway's game of life](life.png "OH YEAH")
 > **[View the demo](https://semibran.github.io/life/)**
 
-Any [Life-like cellular automaton](https://en.wikipedia.org/wiki/Life-like_cellular_automaton) can be modeled using a data structure similar to the following:
+Any [cellular automaton](https://en.wikipedia.org/wiki/Cellular_automata) with rules [similar to](https://en.wikipedia.org/wiki/Life-like_cellular_automaton) [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway's_Game_of_Life) can be modeled using a data structure similar to the following:
 ```js
 let world = {
   time: 0
