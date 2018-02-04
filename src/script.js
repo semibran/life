@@ -6,8 +6,8 @@ let state = {
   world: {
     time: 0,
     rule: parse("B3/S23"),
-    size: [ 768, 768 ],
-    data: new Uint8ClampedArray(768 * 768)
+    size: [ 256, 256 ],
+    data: new Uint8ClampedArray(256 * 256)
   }
 }
 
