@@ -1,56 +1,55 @@
-const update = require("../lib/update")
 const render = require("./render")
+const update = require("./update")
+const keys = require("key-state")(window)
 
 let state = {
-  cache: new Array(16),
-  world: {
-    time: 0,
-    rule: parse("B3/S23"),
-    size: [ 256, 256 ],
-    data: new Uint8ClampedArray(256 * 256)
+  world: [
+    [ -1, 1 ],
+    [ 1, 0 ],
+    [ 0, 0 ],
+    [ 0, 1 ],
+    [ 0, 2 ]
+  ],
+  view: {
+    scale: 2,
+    size: [ window.innerWidth, window.innerHeight ],
+    position: [ 0, 0 ],
+    selection: null
   }
 }
 
-reset(state.world)
+
+
 let canvas = render(state)
 document.body.appendChild(canvas)
-
 requestAnimationFrame(loop)
 
-function parse(rule) {
-  return {
-    birth: rule.slice(1, rule.indexOf("/")).split("").map(Number),
-    survival: rule.slice(rule.indexOf("S") + 1).split("").map(Number)
-  }
-}
-
-function reset(world) {
-  world.time = 0
-  world.data = world.data
-    .fill()
-    .map((_, index) => {
-      let x = index % world.size[0]
-      let y = (index - x) / world.size[0]
-      let dx = world.size[0] / 2 - x
-      let dy = world.size[1] / 2 - y
-      let d = Math.sqrt(dx * dx + dy * dy)
-      let r = world.size[0] / 3
-      return Math.random() > d / r && Math.random() < 0.5
-    })
-}
-
 function loop() {
-  let { cache, world } = state
-  if (cache.length) {
-    for (let i = cache.length - 1; i--;) cache[i + 1] = cache[i]
-    let indices = cache[0] = []
-    for (let i = 0; i < world.data.length; i++) {
-      if (world.data[i]) {
-        indices.push(i)
-      }
-    }
-  }
-  update(world)
+  if (keys.a) state.view.position[0]--
+  if (keys.d) state.view.position[0]++
+  if (keys.w) state.view.position[1]--
+  if (keys.s) state.view.position[1]++
+  update(state.world)
   render(state, canvas)
   requestAnimationFrame(loop)
 }
+
+window.addEventListener("resize", event => {
+  state.view.size[0] = window.innerWidth
+  state.view.size[1] = window.innerHeight
+})
+
+window.addEventListener("wheel", event => {
+  if (Math.abs(event.deltaY) < 16) return
+  if (event.deltaY < 0) {
+    state.view.scale++
+  } else {
+    if (state.view.scale > 1) {
+      state.view.scale--
+    }
+  }
+})
+
+window.addEventListener("mousemove", event => {
+  
+})
