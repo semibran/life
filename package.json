@@ -16,6 +16,7 @@
     "postcss-cli": "^4.1.1",
     "rollup": "^0.55.1",
     "rollup-plugin-commonjs": "^8.3.0",
+    "rollup-plugin-json": "^2.3.0",
     "rollup-plugin-node-resolve": "^3.0.2",
     "uglify-js": "^3.3.9"
   },

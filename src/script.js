@@ -1,55 +1,42 @@
+const pattern = require("./pattern.json")
 const render = require("./render")
 const update = require("./update")
-const keys = require("key-state")(window)
+const size = 256
 
 let state = {
-  world: [
-    [ -1, 1 ],
-    [ 1, 0 ],
-    [ 0, 0 ],
-    [ 0, 1 ],
-    [ 0, 2 ]
-  ],
+  time: 0,
+  prev: [],
+  world: pattern,
   view: {
-    scale: 2,
-    size: [ window.innerWidth, window.innerHeight ],
+    size: [ size, size ],
     position: [ 0, 0 ],
-    selection: null
+    cursor: null
   }
 }
 
+let actions = {
+  update: state => {
+    let buffer = state.prev
+    state.prev = state.world
+    state.world = update(state.prev, buffer)
+    state.time++
+  }
+}
 
+let canvas = document.createElement("canvas")
+canvas.width = size
+canvas.height = size
 
-let canvas = render(state)
+let image = canvas
+  .getContext("2d")
+  .createImageData(size, size)
+
+render(state, image, canvas)
 document.body.appendChild(canvas)
 requestAnimationFrame(loop)
 
 function loop() {
-  if (keys.a) state.view.position[0]--
-  if (keys.d) state.view.position[0]++
-  if (keys.w) state.view.position[1]--
-  if (keys.s) state.view.position[1]++
-  update(state.world)
-  render(state, canvas)
+  actions.update(state)
+  render(state, image, canvas)
   requestAnimationFrame(loop)
 }
-
-window.addEventListener("resize", event => {
-  state.view.size[0] = window.innerWidth
-  state.view.size[1] = window.innerHeight
-})
-
-window.addEventListener("wheel", event => {
-  if (Math.abs(event.deltaY) < 16) return
-  if (event.deltaY < 0) {
-    state.view.scale++
-  } else {
-    if (state.view.scale > 1) {
-      state.view.scale--
-    }
-  }
-})
-
-window.addEventListener("mousemove", event => {
-  
-})
