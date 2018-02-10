@@ -5,13 +5,12 @@ html, body {
 body {
   background: black;
   margin: 0;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 canvas {
-  width: 100vmin;
-  height: 100vmin;
   image-rendering: pixelated;
 }
